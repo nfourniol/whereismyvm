@@ -1,0 +1,38 @@
+hypervisor:
+  - 
+    host: yourhost1.whereismyvm.com
+    type: esxi
+    login: xxxx
+    passwd: xxxx
+  - 
+    host: yourhost2.whereismyvm.com
+    type: esxi
+    login: xxxxx
+    passwd: xxxx
+  - 
+    host: yourhost3.whereismyvm.com
+    type: esxi
+    login: xxxx
+    passwd: xxxxx
+  - 
+    host: yourhost4.whereismyvm.com
+    type: esxi
+    login: xxxxx
+    passwd: xxxxx
+  - 
+    host: yourhost5.whereismyvm.com
+    type: esxi
+    login: xxxxx
+    passwd: xxxxx
+  -
+    host: yourhost6.whereismyvm.com
+    type: proxmox # not implemented
+    login: xxxxx
+    passwd: xxxxx
+  -
+    host: yourhost7.whereismyvm.com
+    type: proxmox # not implemented
+    login: xxxxx
+    passwd: xxxxx
+  
+

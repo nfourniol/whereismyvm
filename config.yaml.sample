@@ -1,0 +1,7 @@
+## Email configuration
+mail_from: 'no-reply@whereismyvm.com'
+mail_recipients:
+  - nfourniol@gmail.com
+# SMTP server:
+smtp_host: 'localhost'
+smtp_port: '25'

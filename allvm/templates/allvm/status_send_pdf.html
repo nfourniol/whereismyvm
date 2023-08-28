@@ -1,0 +1,8 @@
+{% extends "../base.html" %}
+
+{% block css %}
+{% endblock css %}
+
+{% block content %}
+    <h1>Status de la génération du pdf : {% if status == 'OK' %} 'PDF généré et envoyé' {% else %} 'Erreur lors de la génération du PDF' {% endif %}</h1>
+{% endblock content %}

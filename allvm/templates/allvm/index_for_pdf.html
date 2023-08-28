@@ -1,0 +1,87 @@
+{% extends "../base.html" %}
+
+
+{% block css %}
+<!-- xhtml2pdf css can t read from an external file then we copy here css -->
+<style type="text/css">
+@page {size: landscape}
+h1 {
+    text-align: center;
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.poweredOff{
+    color: dimgrey;
+}
+
+td,
+th {
+    border: 1px solid rgb(190, 190, 190);
+    padding: 10px;
+}
+
+td {
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background-color: #eee;
+}
+
+th[scope="col"] {
+    background-color: #696969;
+    color: #fff;
+}
+
+th[scope="row"] {
+    background-color: #d7d9f2;
+}
+
+.smallinfo {
+    font: italic 1.2em "Fira Sans", serif;
+}
+
+.mediuminfo {
+    font: 1.4em "Fira Sans", serif;
+}
+</style>
+{% endblock css %}
+
+{% block content %}
+    <h1>File generated on: {{formatted_now}}</h1>
+
+    <h1>Total Number of VMs : {{hypervisorDataList.countVMTotal}} ({{hypervisorDataList.countVMPoweredOnTotal}} started, {{hypervisorDataList.countVMPoweredOffTotal}} stopped)</h1>
+   
+    {% for hypervisorData in hypervisorDataList.hypervisorDataList %}
+        <table>
+            <tr><th scope="col" colspan="8"><span class="mediuminfo">{{ hypervisorData.hostName }}</span><div class="smallinfo">{{hypervisorData.countVMTotal}} VM ({{hypervisorData.countVMPoweredOn}} started, {{hypervisorData.countVMPoweredOff}} stopped)</div></th></tr>
+            <tr>
+                <th scope="col">VM</th>
+                <th scope="col">Power</th>
+                <th scope="col">vCPU</th>
+                <th scope="col">RAM</th>
+                <th scope="col">VMWare Tools</th>
+                <th scope="col">General Status</th>
+                <th scope="col">OS</th>
+                <th scope="col">IP</th>
+            </tr>
+            {% for vm in hypervisorData.vmDataList %}
+                
+                <tr class="{{ vm.powerState.name }}">
+                    <th scope="row">{{ vm.name }}</th>
+                    <td>{{ vm.powerState.name }}</td>
+                    <td>{{ vm.numCpu }}</td>
+                    <td>{{ vm.memorySizeMb }} GB</td>
+                    <td>{{ vm.toolsVersion }}</td>
+                    <td>{{ vm.overallStatus }}</td>
+                    <td>{{ vm.guestFullName }}</td>
+                    <td>{{ vm.ipAddress }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endfor %}
+{% endblock content %}

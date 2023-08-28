@@ -1,0 +1,47 @@
+h1 {
+    text-align: center;
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.poweredOff{
+    color: dimgrey;
+}
+
+td,
+th {
+    border: 1px solid rgb(190, 190, 190);
+    padding: 10px;
+}
+
+td {
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background-color: #eee;
+}
+
+th[scope="col"] {
+    background-color: #696969;
+    color: #fff;
+}
+
+th[scope="row"] {
+    background-color: #d7d9f2;
+}
+
+.smallinfo {
+    font: italic 1.2em "Fira Sans", serif;
+}
+
+.mediuminfo {
+    font: 1.4em "Fira Sans", serif;
+}
+
+div.stats > span.alert {
+    color: red;
+}
