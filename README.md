@@ -1,4 +1,4 @@
-# VMWareWebUtils
+# WhereIsMyVM
 
 ## How to configurer hypervisor hosts to explore (ESXi, Proxmox, ...)
 In the root project directory, you must create a hypervisor.yaml by using hypervisor.yaml.sample as a modele.
