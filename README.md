@@ -24,7 +24,8 @@ esxi:
     login: esxilogin2
     passwd: mdp2
   - 
-    host: esxi3.whereismyvm.com
+    host: proxmox1.whereismyvm.com
+    type: proxmox
     login: proxmoxlogin3
     passwd: mdp3
 ```
