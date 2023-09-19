@@ -54,6 +54,11 @@ DJANGO_SECRET_KEY
 DJANGO_DEBUG will take the value False
 DJANGO_SECRET_KEY will take a random value which contains special characters and at least 15 characters.
 
+### Install linux requirements
+```
+dnf -y install git python3 httpd python3-pip
+```
+
 ### Deployment
 We will use the python gunicorn server, and as a frontal webserver we'll use apache (as well as you can use nginx).
 Here we are on linux but you can deploy also on windows.
@@ -66,10 +71,9 @@ Install python3 if not present on your linux server.
 Now log on as this webtool user and deploy the sources from github:
 ```
 sudo su - webtool
-git clone https://github.com/...../whereismyvm
+git clone https://github.com/nfourniol/whereismyvm.git
 cd whereismyvm
-pip3 install virtualenv
-virtualenv -p python3 venv
+python3 -m venv venv
 source ./venv/bin/activate
 pip3 install -f requirements.txt
 ```
