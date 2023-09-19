@@ -1,7 +1,7 @@
-# VMWareWebUtils
+# WhereIsMyVM
 
-## How to configurer hypervisor hosts to explore (ESXi, Proxmox, ...)
-In the root project directory, you must create a hypervisor.yaml by using hypervisor.yaml.sample as a modele.
+## How to configure the hypervisors for exploration (ESXi, Proxmox, ...)
+In the project's root directory, create a file named 'hypervisor.yaml' using 'hypervisor.yaml.sample' as a template.
 
 Currently compatible with VMWare only, but you can easily implement solution for proxmox, virtuozzo, or other, just by using esxi.py as a template.
 
@@ -24,7 +24,8 @@ esxi:
     login: esxilogin2
     passwd: mdp2
   - 
-    host: esxi3.whereismyvm.com
+    host: proxmox1.whereismyvm.com
+    type: proxmox
     login: proxmoxlogin3
     passwd: mdp3
 ```
