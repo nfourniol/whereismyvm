@@ -30,6 +30,8 @@ esxi:
     passwd: mdp3
 ```
 
+ESXi users must have only read access.
+
 ## config.yaml
 In the root folder, a 'config.yaml' file should be created by using the 'config.yaml.sample' file as a template.
 
