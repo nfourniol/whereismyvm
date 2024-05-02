@@ -33,6 +33,7 @@ esxi:
 **Security** :
 - ESXi users must have only read access
 - ```chmod 660 hypervisor.yaml```
+- if you fork this project be sure your .gitignore file contains *.env, *.yaml, *.yml (we don't want our password to be shared)
 
 ## config.yaml
 In the root folder, a 'config.yaml' file should be created by using the 'config.yaml.sample' file as a template.
