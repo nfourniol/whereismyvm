@@ -3,7 +3,7 @@
 ## How to configure the hypervisors for exploration (ESXi, Proxmox, ...)
 In the project's root directory, create a file named 'hypervisor.yaml' using 'hypervisor.yaml.sample' as a template.
 
-Currently compatible with VMWare only, but you can easily implement solution for proxmox, virtuozzo, or other, just by using esxi.py as a template.
+Currently compatible with VMWare only, but you can easily implement solution for proxmox, or other, just by using esxi.py as a template.
 
 And then modify the factory method getHypervisorService to return the new implemented hypervisor service.
 
@@ -30,20 +30,66 @@ esxi:
     passwd: mdp3
 ```
 
+**Security** :
+- ESXi users must have only read access
+- ```chmod 660 hypervisor.yaml```
+- if you fork this project be sure your .gitignore file contains *.env, *.yaml, *.yml (we don't want our password to be shared)
+
 ## config.yaml
 In the root folder, a 'config.yaml' file should be created by using the 'config.yaml.sample' file as a template.
 
 ## Development environment
 You should define the following environment variables :
+
 DJANGO_DEBUG
+
 DJANGO_SECRET_KEY
 
 DJANGO_DEBUG will take the value True
+
 DJANGO_SECRET_KEY will take a random value which contains special characters and at least 15 characters.
 
 These variables are read in settings.py file.
 
 You can use Visual Studio Code as an IDE. And you should install the python and django plugins.
+
+## Docker container for quick test
+First clone this repository.
+
+Then go into the <ROOT_DIRECTORY>/.docker directory.
+
+Create config.yaml by copying <ROOT_DIRECTORY>/config.yaml.sample
+
+Create hypervisor.yaml by copying <ROOT_DIRECTORY>/hypervisor.yaml.sample
+
+Edit these two files, and fill the values required.
+
+In a windows command prompt:
+```
+cd <ROOT_DIRECTORY>/.docker
+docker build --no-cache -t whereismyvm:v1.0 .
+docker run --name whereismyvm -v %cd%\config.yaml:/var/www/webtool/whereismyvm/config.yaml -v %cd%\hypervisor.yaml:/var/www/webtool/whereismyvm/hypervisor.yaml -d -p 7777:7777 whereismyvm:v1.0
+```
+In a windows powershell prompt:
+```
+cd <ROOT_DIRECTORY>/.docker
+docker build --no-cache -t whereismyvm:v1.0 .
+docker run --name whereismyvm -v $(pwd)\config.yaml:/var/www/webtool/whereismyvm/config.yaml -v $(pwd)\hypervisor.yaml:/var/www/webtool/whereismyvm/hypervisor.yaml -d -p 7777:7777 whereismyvm:v1.0
+```
+
+In a linux prompt:
+```
+cd <ROOT_DIRECTORY>/.docker
+docker build --no-cache -t whereismyvm:v1.0 .
+docker run --name whereismyvm -v $(pwd)/config.yaml:/var/www/webtool/whereismyvm/config.yaml -v $(pwd)/hypervisor.yaml:/var/www/webtool/whereismyvm/hypervisor.yaml -d -p 7777:7777 whereismyvm:v1.0
+```
+
+Then you can see your container logs with:
+```
+docker logs -f whereismyvm
+```
+
+Your can access the web at the following URL: http://localhost:7777/
 
 ## Production environment
 
@@ -104,7 +150,7 @@ Add the following host information (you can replace 80 port by 443 port in case 
 ```
 systemctl reload httpd
 ```
-Then you can access your whereismyvm app on the url http://yourdomain.forthisserver.com/
+Then you can access your whereismyvm app on the url http://whereismyvm.yourdomain.com/
 
 ## How to restart server in case of an error
 As the webtool user :
