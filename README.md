@@ -3,7 +3,7 @@
 ## How to configure the hypervisors for exploration (ESXi, Proxmox, ...)
 In the project's root directory, create a file named 'hypervisor.yaml' using 'hypervisor.yaml.sample' as a template.
 
-Currently compatible with VMWare only, but you can easily implement solution for proxmox, or other, just by using esxi.py as a template.
+***Currently compatible with VMWare only, but you can easily implement solution for proxmox, or other***, just by using esxi.py as a template.
 
 And then modify the factory method getHypervisorService to return the new implemented hypervisor service.
 
@@ -90,6 +90,8 @@ docker logs -f whereismyvm
 ```
 
 Your can access the web at the following URL: http://localhost:7777/
+
+NOTE: hypervisor.yaml must have been created with the values from your esxi servers otherwise you'll get an error when accessing the url.
 
 ## Production environment
 
