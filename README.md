@@ -109,7 +109,7 @@ Add the following host information (you can replace 80 port by 443 port in case 
 ```
 systemctl reload httpd
 ```
-Then you can access your whereismyvm app on the url http://yourdomain.forthisserver.com/allvm/
+Then you can access your whereismyvm app on the url http://whereismyvm.yourdomain.com/
 
 ## How to restart server in case of an error
 As the webtool user :
