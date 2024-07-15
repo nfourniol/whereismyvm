@@ -76,7 +76,7 @@ class HostData:
     # An Hypervisor Host (different from a VM which is virtualized inside an Hypervisor host)
 
     # parameterized constructor
-    def __init__(self, hardMemorySizeMb, hardCpuCapabilityMhz, diskCapacity, ipAddress, overallMemoryUsageMb, overallCpuUsageMhz, uptimeMin):
+    def __init__(self, hardMemorySizeMb, hardCpuCapabilityMhz, diskCapacity, ipAddress, overallMemoryUsageMb, overallCpuUsageMhz, uptimeMin, version=None):
         self.hardMemorySizeMb = hardMemorySizeMb
         self.hardCpuCapabilityMhz = hardCpuCapabilityMhz
         self.diskCapacity = diskCapacity
@@ -84,6 +84,7 @@ class HostData:
         self.overallMemoryUsageMb = overallMemoryUsageMb
         self.overallCpuUsageMhz = overallCpuUsageMhz
         self.uptimeMin = uptimeMin
+        self.version = version
 
     def getDiskCapacityGb(self) -> int:
         return int(self.diskCapacity / 1024 / 1024 / 1024)

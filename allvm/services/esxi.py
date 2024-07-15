@@ -28,11 +28,12 @@ class ESXiService(HypervisorServiceInterface):
         """Just a class to transport esxi connection data
         """
         # parameterized constructor
-        def __init__(self, hostContainerView, containerView, listVmView):
+        def __init__(self, hostContainerView, containerView, listVmView, version):
             self.hostContainerView = hostContainerView
             self.containerView = containerView
             self.hostView = hostContainerView.view[0]
             self.listVmView = listVmView
+            self.version = version
 
     def print_vminfo(vm, depth=1):
         """
@@ -108,7 +109,7 @@ class ESXiService(HypervisorServiceInterface):
             ipAddress=summary.managementServerIp,
             overallMemoryUsageMb=summary.quickStats.overallMemoryUsage, # en Mb
             overallCpuUsageMhz=summary.quickStats.overallCpuUsage, 
-            uptimeMin=int((summary.quickStats.uptime if summary.quickStats.uptime is not None else 0) / 60)) # uptime en minutes
+            uptimeMin=int((summary.quickStats.uptime if summary.quickStats.uptime is not None else 0) / 60)) # uptime en minutes 
 
 
         return hostData
@@ -165,7 +166,7 @@ class ESXiService(HypervisorServiceInterface):
 
         listVmView = containerView.view
 
-        esxiConnectionDto = ESXiService.ESXiConnectionDto(hostContainerView, containerView, listVmView)
+        esxiConnectionDto = ESXiService.ESXiConnectionDto(hostContainerView, containerView, listVmView, svc_inst.content.about.version)
 
         return esxiConnectionDto
     
@@ -190,12 +191,12 @@ class ESXiService(HypervisorServiceInterface):
         if esxiConnectionDto is not None:
             # # Firstly get data from host view
             hostData = ESXiService.getHostData(esxiConnectionDto.hostView)
+            hostData.version = esxiConnectionDto.version
 
             # Secondly get data from each vm view
             # listVmView is None when there was a connection error (for instance bad identifiers)
             for vmView in esxiConnectionDto.listVmView:
                 vmData: VirtualMachineData = ESXiService.getVmData(vmView)
-                #ESXiService.print_vm_info(vmView)
                 vmDataList.append(vmData)
                 allocatedDiskSpaceGb = allocatedDiskSpaceGb + vmData.getAllocatedDiskSpaceGb()
                 if vmData.powerState.name == PowerState.poweredOn.name:
