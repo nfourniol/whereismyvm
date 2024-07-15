@@ -105,8 +105,11 @@ DJANGO_SECRET_KEY will take a random value which contains special characters and
 
 ### Install linux requirements
 ```
-dnf -y install git python3 httpd python3-pip
+dnf -y install git httpd
 ```
+
+Install python 3 and pip3 if not present on your server: you can follow this link that allow you to install a specific python3 version https://nicodevlog.com/2022/05/17/python-and-virtual-environments-on-linux-os/
+
 
 ### Deployment
 We will use the python gunicorn server, and as a frontal webserver we'll use apache (as well as you can use nginx).
