@@ -12,7 +12,12 @@
             "args": [
                 "runserver"
             ],
-            "django": true
+            "django": true,
+            "justMyCode": true,
+            "console": "integratedTerminal",
+            "env": {
+                "DJANGO_SETTINGS_MODULE": "whereismyvm.settings"
+            }
         }
     ]
 }

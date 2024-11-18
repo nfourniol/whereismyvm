@@ -12,6 +12,7 @@ from django.http import HttpResponseServerError
 from allvm.services.email import EmailService
 from allvm.services.utils import ConfigService
 from datetime import datetime
+#from guppy import hpy
 
 
 def index(request):
@@ -24,6 +25,19 @@ def index(request):
         'hypervisorDataList': hypervisorDataList,
     }
     return HttpResponse(template.render(context, request))
+
+
+#def memory(request):
+#    import gc
+#    n = gc.collect()
+#    print("**\n**\n**\nNumber of unreachable objects collected by GC:", n)  
+#    print("**\n**\n**\n")
+#
+#    hp = hpy()
+#    heap = hp.heap()
+#    print(heap.all)
+#
+#    return HttpResponse()
 
 
 def render_to_pdf(request):

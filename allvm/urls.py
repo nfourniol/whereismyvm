@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     # ex: /allvm/pdf
     path('pdf/', views.render_to_pdf, name='render_to_pdf'),
+    #path('memory/', views.memory, name='memory'),
     # ex: /polls/5/
     #path('<int:question_id>/', views.detail, name='detail'),
     # ex: /polls/5/results/

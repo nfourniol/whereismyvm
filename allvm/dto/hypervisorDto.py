@@ -125,8 +125,9 @@ class HypervisorData:
     vmDataList: List = field(default_factory=[VirtualMachineData])
 
     # parameterized constructor
-    def __init__(self, hostName, hostData: HostData, vmDataList: List[VirtualMachineData], 
+    def __init__(self, hostType: str, hostName: str, hostData: HostData, vmDataList: List[VirtualMachineData], 
                 countVMPoweredOn: int, countVMPoweredOff: int, allocatedRAMGb: int, allocatedDiskSpaceGb: int):
+        self.hostType = hostType
         self.hostName = hostName
         self.hostData = hostData
         self.vmDataList = vmDataList

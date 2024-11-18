@@ -1,6 +1,7 @@
 from allvm.dto.hypervisorDto import HypervisorConnection
 from allvm.dto.hypervisorDto import HypervisorDataList
 from allvm.services.esxi import ESXiService
+from allvm.services.proxmox import ProxmoxService
 from allvm.services.hypervisorServiceInterface import HypervisorServiceInterface
 
 import yaml
@@ -45,7 +46,7 @@ class HypervisorServiceFactory:
         if type.lower() == "esxi":
             return ESXiService()
         elif type.lower() == "proxmox":
-            f"TODO implement proxmox service"
+            return ProxmoxService()
         else:
             raise NotImplementedError
         

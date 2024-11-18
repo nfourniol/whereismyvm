@@ -12,7 +12,7 @@
             <tr>
                 <th scope="col" colspan="10">
                     <span class="mediuminfo">{{ hypervisorData.hostName }}</span>
-                    <div class="smallinfo">{{hypervisorData.countVMTotal}} VM ({{hypervisorData.countVMPoweredOn}} started, {{hypervisorData.countVMPoweredOff}} stopped), {% if hypervisorData.hostData.ipAddress is not None %}vCenter {{ hypervisorData.hostData.ipAddress }}{% else %}no vCenter{% endif %} - VMware version {{ hypervisorData.hostData.version }}</div>
+                    <div class="smallinfo">{{hypervisorData.countVMTotal}} VM ({{hypervisorData.countVMPoweredOn}} started, {{hypervisorData.countVMPoweredOff}} stopped), Hypervisor {% if hypervisorData.hostType == "esxi" %}VMWare{% elif hypervisorData.hostType == "proxmox" %}Proxmox VE{% else %}(unknow?){% endif %} - version {{ hypervisorData.hostData.version }}</div>
                     <div class="stats">"Instant'Usage"* => RAM: <span {% if hypervisorData.hostData.getRamPercentageUsage > 89 %}class="alert"{% endif %}>{{ hypervisorData.hostData.getRamPercentageUsage }}% et {{ hypervisorData.getAvailableRAMGb }} GB free</span>  //   <span {% if hypervisorData.hostData.getCpuPercentageUsage > 70 %}class="alert"{% endif %}>CPU : {{ hypervisorData.hostData.getCpuPercentageUsage }}%</span>   //   {% if hypervisorData.getDiskPercentageUsage > 89 %}<span class="alert">Disk: free space low</span>{% else %}<span>Disk: free space OK</span>{% endif %}   //   <span {% if hypervisorData.hostData.uptimeMin < 2880 %}class="alert"{% endif %}>Uptime : {{hypervisorData.hostData.getUptimeString}}</span></div>
                     <div class="stats">*Indicators in beta version</div>
                 </th>
@@ -23,8 +23,7 @@
                 <th scope="col">vCPU</th>
                 <th scope="col">RAM</th>
                 <th scope="col">Disk*</th>
-                <th scope="col">VMWare Tools</th>
-                <th scope="col">General Status</th>
+                <th scope="col">{% if hypervisorData.hostType == "esxi" %}VMWare Tools{% elif hypervisorData.hostType == "proxmox" %}QEMU Agent{% else %}Agent (unknow?){% endif %}</th>
                 <th scope="col">OS</th>
                 <th scope="col">IP</th>
             </tr>
@@ -37,7 +36,6 @@
                     <td>{{ vm.getMemorySizeGb }} GB</td>
                     <td>{{ vm.getAllocatedDiskSpaceGb }} GB</td>
                     <td>{{ vm.toolsVersion }}</td>
-                    <td>{{ vm.overallStatus }}</td>
                     <td>{{ vm.guestFullName }}</td>
                     <td>{{ vm.ipAddress }}</td>
                 </tr>

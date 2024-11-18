@@ -1,6 +1,11 @@
 hypervisor:
   - 
-    host: yourhost1.whereismyvm.com
+    host: yourhost1.whereismyvm.com:8006 # When port is different from 443 you can specify it in the host
+    type: proxmox
+    login: xxxx
+    passwd: xxxx
+  - 
+    host: yourhost1bis.whereismyvm.com
     type: esxi
     login: xxxx
     passwd: xxxx
@@ -26,13 +31,8 @@ hypervisor:
     passwd: xxxxx
   -
     host: yourhost6.whereismyvm.com
-    type: proxmox # not implemented
+    type: proxmox
     login: xxxxx
     passwd: xxxxx
-  -
-    host: yourhost7.whereismyvm.com
-    type: proxmox # not implemented
-    login: xxxxx
-    passwd: xxxxx
-  
+
 

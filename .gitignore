@@ -1,7 +1,7 @@
 
 *.env
-*.yaml
-*.yml
+config.yaml
+hypervisor.yaml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -10,4 +10,4 @@ class PowerState(enum.Enum):
         for state in PowerState:
             if state.name == name:
                 return state
-        raise ValueError('{} is not a valid station name'.format(name))
+        raise ValueError('{} is not a valid state name'.format(name))

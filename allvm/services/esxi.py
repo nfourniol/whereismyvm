@@ -5,7 +5,6 @@ from allvm.dto.hypervisorDto import HostData
 from allvm.dto.hypervisorDto import HypervisorConnection
 from allvm.enum.PowerState import PowerState
 
-
 from abc import ABCMeta
 import ssl
 import atexit
@@ -133,13 +132,18 @@ class ESXiService(HypervisorServiceInterface):
 
         # another equivalent:
         #sslCtx = ssl._create_unverified_context()
+        hostName = hypervisorConn.hostName
+        port = 443 # default port
+        if ':' in hypervisorConn.hostName: # if a port is indicated in the name (the host name could be a simple IP too)
+            hostName = hypervisorConn.hostName.split(":",1)[0]
+            port = hypervisorConn.hostName.split(":",1)[1]
 
         # let's get a connection
         try:
-            svc_inst = connect.SmartConnect(host=hypervisorConn.hostName,
+            svc_inst = connect.SmartConnect(host=hostName,
                                                     user=hypervisorConn.login,
                                                     pwd=hypervisorConn.passwd,
-                                                    port=int(443),
+                                                    port=int(port),
                                                     sslContext=sslCtx)
             # incantation to close if the application is exited (process exited)
             atexit.register(connect.Disconnect, svc_inst)
@@ -210,7 +214,7 @@ class ESXiService(HypervisorServiceInterface):
 
         ESXiService.disconnectFromESXi(esxiConnectionDto)
         
-        return HypervisorData(hostName=hypervisorConn.hostName, hostData=hostData, vmDataList=vmDataList, countVMPoweredOn=countVMPowOn, 
+        return HypervisorData(hostType=hypervisorConn.type.lower, hostName=hypervisorConn.hostName, hostData=hostData, vmDataList=vmDataList, countVMPoweredOn=countVMPowOn, 
                         countVMPoweredOff=countVMPowOff, allocatedRAMGb=allocatedRAMGb, allocatedDiskSpaceGb=allocatedDiskSpaceGb)
 
 
