@@ -3,16 +3,22 @@
 ## How to configure the hypervisors for exploration (ESXi, Proxmox, ...)
 In the project's root directory, create a file named 'hypervisor.yaml' using 'hypervisor.yaml.sample' as a template.
 
-***Currently compatible with VMWare only, but you can easily implement solution for proxmox, or other***, just by using esxi.py as a template.
-
-And then modify the factory method getHypervisorService to return the new implemented hypervisor service.
-
 This software supports hot reload, so any changes made to hypervisor.yaml are immediately reflected without the need for restarting the application.
 
 This file use the following structure :
 
 ```
 esxi:
+  -
+    host: proxmox1.whereismyvm.com:8006
+    type: proxmox
+    login: proxmoxlogin1
+    passwd: mdp1
+  -
+    host: proxmox2.whereismyvm.com
+    type: proxmox
+    login: proxmoxlogin2
+    passwd: mdp2
   -
     host: esxi1.whereismyvm.com
     type: esxi
@@ -31,9 +37,17 @@ esxi:
 ```
 
 **Security** :
-- ESXi users must have only read access
+- ESXi users must have read only access
+- Proxmox users must have read only access
 - ```chmod 660 hypervisor.yaml```
-- if you fork this project be sure your .gitignore file contains *.env, *.yaml, *.yml (we don't want our password to be shared)
+- if you fork this project be sure your .gitignore file contains *.env, config.yaml, hypervisor.yml (we don't want our password to be shared)
+
+## How to manage other hypervisors than ESXi and Proxmox
+
+***Currently compatible with VMWare and Proxmox, but you can easily implement solutions for other kind of hypervisors***, just by using esxi.py or proxmox.py as a template.
+
+And then modify the factory method getHypervisorService to return the new implemented hypervisor service.
+
 
 ## config.yaml
 In the root folder, a 'config.yaml' file should be created by using the 'config.yaml.sample' file as a template.
