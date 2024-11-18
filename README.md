@@ -29,11 +29,6 @@ esxi:
     type: esxi
     login: esxilogin2
     passwd: mdp2
-  - 
-    host: proxmox1.whereismyvm.com
-    type: proxmox # be careful, it's juste here as an example, but proxmox implementation doesn't exist for the moment
-    login: proxmoxlogin3
-    passwd: mdp3
 ```
 
 **Security** :
