@@ -8,7 +8,7 @@ This software supports hot reload, so any changes made to hypervisor.yaml are im
 This file use the following structure :
 
 ```
-esxi:
+hypervisor:
   -
     host: proxmox1.whereismyvm.com:8006
     type: proxmox
