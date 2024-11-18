@@ -35,7 +35,7 @@ esxi:
 - ESXi users must have read only access
 - Proxmox users must have read only access
 - ```chmod 660 hypervisor.yaml```
-- if you fork this project be sure your .gitignore file contains *.env, config.yaml, hypervisor.yml (we don't want our password to be shared)
+- if you fork this project be sure your .gitignore file contains *.env, config.yaml, hypervisor.yml (we don't want our passwords to be shared)
 
 ## How to manage other hypervisors than ESXi and Proxmox
 
