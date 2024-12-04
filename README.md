@@ -9,16 +9,23 @@ This file use the following structure :
 
 ```
 hypervisor:
-  -
-    host: proxmox1.whereismyvm.com:8006
+  - 
+    host: proxmox1.whereismyvm.com:8006 # When port is different from 443 you can specify it in the host
     type: proxmox
+    node_name: name_of_the_hypervisor_node # Useful in case of Proxmox "cluster". Optional if it's not part of a cluster.
     login: proxmoxlogin1
-    passwd: mdp1
-  -
-    host: proxmox2.whereismyvm.com
+    passwd: passwd1
+  - 
+    host: proxmox1.whereismyvm.com:8006 # When port is different from 443 you can specify it in the host
+    type: proxmox
+    node_name: name_of_the_hypervisor_node # Useful in case of Proxmox "cluster". Optional if it's not part of a cluster.
+    login: proxmoxlogin1
+    passwd: passwd1
+  - 
+    host: proxmox2.whereismyvm.com:8006 # When port is different from 443 you can specify it in the host
     type: proxmox
     login: proxmoxlogin2
-    passwd: mdp2
+    passwd: passwd2
   -
     host: esxi1.whereismyvm.com
     type: esxi
