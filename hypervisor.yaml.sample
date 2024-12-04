@@ -2,6 +2,7 @@ hypervisor:
   - 
     host: yourhost1.whereismyvm.com:8006 # When port is different from 443 you can specify it in the host
     type: proxmox
+    node_name: name_of_the_hypervisor_node # Useful in case of Proxmox "cluster". Optional if it's not part of a cluster.
     login: xxxx
     passwd: xxxx
   - 

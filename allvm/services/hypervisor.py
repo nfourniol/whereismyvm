@@ -23,7 +23,7 @@ class HypervisorService:
 
             for item, connections in document.items():
                 for connect in connections:
-                    hypervisorConns.append(HypervisorConnection(hostName=connect.get('host'), type=connect.get('type'), login=connect.get('login'), passwd=connect.get('passwd')))
+                    hypervisorConns.append(HypervisorConnection(hostName=connect.get('host'), type=connect.get('type'), nodeName=connect.get('node_name'), login=connect.get('login'), passwd=connect.get('passwd')))
         
         return hypervisorConns
 

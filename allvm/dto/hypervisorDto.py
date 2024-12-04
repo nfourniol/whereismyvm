@@ -10,9 +10,10 @@ class HypervisorConnection:
     """
      
     # parameterized constructor
-    def __init__(self, hostName: str, type: str, login: str, passwd: str):
+    def __init__(self, hostName: str, type: str, nodeName: str, login: str, passwd: str):
         self.hostName = hostName
         self.type = type
+        self.nodeName = nodeName
         self.login = login
         self.passwd = passwd
 
@@ -125,10 +126,11 @@ class HypervisorData:
     vmDataList: List = field(default_factory=[VirtualMachineData])
 
     # parameterized constructor
-    def __init__(self, hostType: str, hostName: str, hostData: HostData, vmDataList: List[VirtualMachineData], 
+    def __init__(self, hostType: str, hostName: str, nodeName: str, hostData: HostData, vmDataList: List[VirtualMachineData], 
                 countVMPoweredOn: int, countVMPoweredOff: int, allocatedRAMGb: int, allocatedDiskSpaceGb: int):
         self.hostType = hostType
         self.hostName = hostName
+        self.nodeName = nodeName
         self.hostData = hostData
         self.vmDataList = vmDataList
         self.__countVMPoweredOn = countVMPoweredOn

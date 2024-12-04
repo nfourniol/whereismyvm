@@ -214,7 +214,7 @@ class ESXiService(HypervisorServiceInterface):
 
         ESXiService.disconnectFromESXi(esxiConnectionDto)
         
-        return HypervisorData(hostType=hypervisorConn.type.lower, hostName=hypervisorConn.hostName, hostData=hostData, vmDataList=vmDataList, countVMPoweredOn=countVMPowOn, 
+        return HypervisorData(hostType=hypervisorConn.type.lower, hostName=hypervisorConn.hostName, nodeName=hypervisorConn.nodeName, hostData=hostData, vmDataList=vmDataList, countVMPoweredOn=countVMPowOn, 
                         countVMPoweredOff=countVMPowOff, allocatedRAMGb=allocatedRAMGb, allocatedDiskSpaceGb=allocatedDiskSpaceGb)
 
 

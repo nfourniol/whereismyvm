@@ -12,18 +12,23 @@ class ProxmoxService(HypervisorServiceInterface):
 
     class ProxmoxConnectionDto:
         """Class to hold proxmox connection data"""
-        def __init__(self, proxmox, node_name):
+        def __init__(self, proxmox, nodeName):
             self.proxmox = proxmox
-            self.node_name = node_name
+            self.nodeName = nodeName
 
     @staticmethod
     def connectToProxmox(hypervisorConn: HypervisorConnection):
         """Establish connection to Proxmox API"""
         try:
             proxmox = ProxmoxAPI(hypervisorConn.hostName, user=hypervisorConn.login, password=hypervisorConn.passwd, verify_ssl=False)
-            # Assuming we are only working with a single node in the Proxmox cluster
-            node_name = proxmox.nodes.get()[0]["node"]
-            return ProxmoxService.ProxmoxConnectionDto(proxmox, node_name)
+            
+            if hypervisorConn.nodeName is None:
+                # if nodeName is not provided we take the first node name found
+                nodeName = proxmox.nodes.get()[0]["node"]
+            else:
+                nodeName = hypervisorConn.nodeName
+
+            return ProxmoxService.ProxmoxConnectionDto(proxmox, nodeName)
         except Exception as e:
             print(f"Connection to Proxmox failed: {e}")
             return None
@@ -37,8 +42,8 @@ class ProxmoxService(HypervisorServiceInterface):
     @staticmethod
     def getHostData(proxmoxConnectionDto: ProxmoxConnectionDto) -> HostData:
         """Retrieve host data for Proxmox node"""
-        node_info = proxmoxConnectionDto.proxmox.nodes(proxmoxConnectionDto.node_name).status.get()
-        networkInfo = proxmoxConnectionDto.proxmox.nodes(proxmoxConnectionDto.node_name).network.get()
+        nodeInfo = proxmoxConnectionDto.proxmox.nodes(proxmoxConnectionDto.nodeName).status.get()
+        networkInfo = proxmoxConnectionDto.proxmox.nodes(proxmoxConnectionDto.nodeName).network.get()
 
         # Récupérer l'IP de la carte réseau principale (souvent `vmbr0`)
         mainIp = None
@@ -48,13 +53,13 @@ class ProxmoxService(HypervisorServiceInterface):
                 break
 
         hostData = HostData(
-            hardMemorySizeMb=node_info["memory"]["total"] / 1024 / 1024,
-            hardCpuCapabilityMhz=float(node_info.get("cpuinfo", {}).get("mhz")),
-            diskCapacity=node_info["rootfs"]["total"],
+            hardMemorySizeMb=nodeInfo["memory"]["total"] / 1024 / 1024,
+            hardCpuCapabilityMhz=float(nodeInfo.get("cpuinfo", {}).get("mhz")),
+            diskCapacity=nodeInfo["rootfs"]["total"],
             ipAddress=mainIp,
-            overallMemoryUsageMb=node_info["memory"]["used"] / 1024 / 1024,
-            overallCpuUsageMhz=node_info.get("cpu", 0) * float(node_info.get("cpuinfo", {}).get("mhz")),
-            uptimeMin=int(node_info["uptime"] / 60),
+            overallMemoryUsageMb=nodeInfo["memory"]["used"] / 1024 / 1024,
+            overallCpuUsageMhz=nodeInfo.get("cpu", 0) * float(nodeInfo.get("cpuinfo", {}).get("mhz")),
+            uptimeMin=int(nodeInfo["uptime"] / 60),
             version=proxmoxConnectionDto.proxmox.version.get()["version"]
         )
         
@@ -63,13 +68,13 @@ class ProxmoxService(HypervisorServiceInterface):
     @staticmethod
     def getVmData(proxmoxConnectionDto: ProxmoxConnectionDto, vm_id: str) -> VirtualMachineData:
         """Retrieve VM data for a specific VM in Proxmox"""
-        vm_info = proxmoxConnectionDto.proxmox.nodes(proxmoxConnectionDto.node_name).qemu(vm_id).status.current.get()
-        vm_config = proxmoxConnectionDto.proxmox.nodes(proxmoxConnectionDto.node_name).qemu(vm_id).config.get()
+        vm_info = proxmoxConnectionDto.proxmox.nodes(proxmoxConnectionDto.nodeName).qemu(vm_id).status.current.get()
+        vm_config = proxmoxConnectionDto.proxmox.nodes(proxmoxConnectionDto.nodeName).qemu(vm_id).config.get()
 
         qemuAgent = False
         try:
             # Get network information via guest agent
-            network_info = proxmoxConnectionDto.proxmox.nodes(proxmoxConnectionDto.node_name).qemu(vm_id).agent("network-get-interfaces").get()
+            network_info = proxmoxConnectionDto.proxmox.nodes(proxmoxConnectionDto.nodeName).qemu(vm_id).agent("network-get-interfaces").get()
             qemuAgent = True # if network-get-interfaces is available then we know that Quemu agent is active and well configured
 
              # Array to store all ip address
@@ -106,7 +111,7 @@ class ProxmoxService(HypervisorServiceInterface):
                 # Checks whether a storage device has been defined
                 if storage and volume:
                     # Queries the API to obtain the size of the disk on this storage device
-                    storage_info = proxmoxConnectionDto.proxmox.nodes(proxmoxConnectionDto.node_name).storage(storage).content.get()
+                    storage_info = proxmoxConnectionDto.proxmox.nodes(proxmoxConnectionDto.nodeName).storage(storage).content.get()
                     
                     # Find the corresponding volume and extract its size
                     for item in storage_info:
@@ -147,7 +152,7 @@ class ProxmoxService(HypervisorServiceInterface):
             hostData = ProxmoxService.getHostData(proxmoxConnectionDto)
 
             # Collect VM data
-            vms = proxmoxConnectionDto.proxmox.nodes(proxmoxConnectionDto.node_name).qemu.get()
+            vms = proxmoxConnectionDto.proxmox.nodes(proxmoxConnectionDto.nodeName).qemu.get()
             for vm in vms:
                 vmData = ProxmoxService.getVmData(proxmoxConnectionDto, vm["vmid"])
                 vmDataList.append(vmData)
@@ -166,6 +171,7 @@ class ProxmoxService(HypervisorServiceInterface):
         return HypervisorData(
             hostType=hypervisorConn.type.lower, 
             hostName=hypervisorConn.hostName,
+            nodeName=hypervisorConn.nodeName,
             hostData=hostData,
             vmDataList=vmDataList,
             countVMPoweredOn=countVMPowOn,
