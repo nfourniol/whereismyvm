@@ -198,6 +198,14 @@ If the app didn't come back after 30 seconds, you can execute the following comm
 kill 12463
 ```
 
+Now to start again gunicorn you must enter the python virtual environment and start gunicorn with gunicorn whereismyvm.wsgi --bind 127.0.0.1:8888 --daemon, and then exit the virtual environment:
+```
+source venv/bin/activate
+(venv) gunicorn whereismyvm.wsgi --bind 127.0.0.1:8888 --daemon
+(venv) exit
+```
+
+
 ## Update application source code and empty the server cache ##
 You can deploy use whatever mean for deploying (ftp, git pull, ...)
 
