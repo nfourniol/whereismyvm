@@ -171,7 +171,7 @@ class ProxmoxService(HypervisorServiceInterface):
         return HypervisorData(
             hostType=hypervisorConn.type.lower, 
             hostName=hypervisorConn.hostName,
-            nodeName=hypervisorConn.nodeName,
+            nodeName=proxmoxConnectionDto.nodeName,
             hostData=hostData,
             vmDataList=vmDataList,
             countVMPoweredOn=countVMPowOn,
