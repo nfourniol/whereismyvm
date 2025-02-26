@@ -120,15 +120,13 @@ class ProxmoxService(HypervisorServiceInterface):
                             committedDiskSpace += disk_size
   
 
-
-
         vmData = VirtualMachineData(
-            name=vm_config["name"],
-            powerState=PowerState.poweredOn if vm_info["status"] == "running" else PowerState.poweredOff,
-            overallStatus="green" if vm_info["status"] == "running" else "red",
-            guestFullName=ProxmoxOS.fromKey(vm_config.get("ostype", "Unknown OS")).osName,
-            memorySizeMb=int(vm_config["memory"]),
-            numCpu=int(vm_config["cores"]),
+            name=vm_config.get("name", f"VM in a temporary state (lock: {vm_config.get('lock','None')})"),
+            powerState=PowerState.poweredOn if vm_config.get("status", "Not running") == "running" else PowerState.poweredOff,
+            overallStatus="green" if vm_config.get("status", "Not running") == "running" else "red",
+            guestFullName=ProxmoxOS.fromKey(vm_config.get("ostype", "other")).osName,
+            memorySizeMb=int(vm_config.get("memory", 0)),
+            numCpu=int(vm_config.get("cores", 0)),
             ipAddress=all_ips_str,
             toolsVersion="Active" if qemuAgent else "Inactive or bad configuration",
             committedDiskSpace=committedDiskSpace,
