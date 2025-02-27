@@ -70,6 +70,8 @@ class ProxmoxService(HypervisorServiceInterface):
         """Retrieve VM data for a specific VM in Proxmox"""
         vm_info = proxmoxConnectionDto.proxmox.nodes(proxmoxConnectionDto.nodeName).qemu(vm_id).status.current.get()
         vm_config = proxmoxConnectionDto.proxmox.nodes(proxmoxConnectionDto.nodeName).qemu(vm_id).config.get()
+        vm_status = proxmoxConnectionDto.proxmox.nodes(proxmoxConnectionDto.nodeName).qemu(vm_id).status.current.get()
+
 
         qemuAgent = False
         try:
@@ -119,11 +121,20 @@ class ProxmoxService(HypervisorServiceInterface):
                             disk_size = item.get("size", 0)
                             committedDiskSpace += disk_size
   
+        vmStatus = vm_status.get("status", "unknown")
+        pState = None
+        if vmStatus == "running":
+            pState = PowerState.poweredOn
+        elif vmStatus == "paused":
+            pState = PowerState.suspended
+        else:
+            pState = PowerState.poweredOff
+
 
         vmData = VirtualMachineData(
             name=vm_config.get("name", f"VM in a temporary state (lock: {vm_config.get('lock','None')})"),
-            powerState=PowerState.poweredOn if vm_config.get("status", "Not running") == "running" else PowerState.poweredOff,
-            overallStatus="green" if vm_config.get("status", "Not running") == "running" else "red",
+            powerState=pState,
+            overallStatus="green" if vmStatus == "running" else "red",
             guestFullName=ProxmoxOS.fromKey(vm_config.get("ostype", "other")).osName,
             memorySizeMb=int(vm_config.get("memory", 0)),
             numCpu=int(vm_config.get("cores", 0)),
